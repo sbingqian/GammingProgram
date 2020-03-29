@@ -1,5 +1,7 @@
 package handler;
 
+import enums.AttributeType;
+import module.Attribute;
 import module.Equipment;
 import module.User;
 
@@ -67,15 +69,29 @@ public class BattleHandler {
 
 
     private void processUserAttr(User user){
+        Long baseAttr = user.getAttack();
+        Long baseAvoid = user.getAvoid();
+        Long baseSpeed = user.getSpeed();
+        Long baseDefence = user.getDefence();
+        Long baseCritical = user.getCritical();
         List<Equipment> equipmentList = user.getEquipmentList();
         for (Equipment equipment : equipmentList){
+            for (Attribute attribute : equipment.getAttributeList()) {
+                if (AttributeType.ATTACK.sameType(attribute.getAttribute())){
 
 
-
-
+                }
+            }
         }
     }
 
+
+    /**
+     * 处理收益
+     */
+    private void processBenefit(Long baseValue){
+
+    }
 
 
     private boolean isHitRange(Long speedDiff){

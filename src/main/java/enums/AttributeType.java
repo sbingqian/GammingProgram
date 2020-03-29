@@ -13,14 +13,16 @@ public enum AttributeType {
     AVOID("闪避", "AVOID"),
     CRITICAL("暴击", "CRITICAL"),
 
-
     ;
-
 
     @Getter
     private String name;
 
     @Getter
     private String code;
+
+    public boolean sameType(AttributeType attributeType) {
+        return this.getCode().equals(attributeType.getCode());
+    }
 
 }
