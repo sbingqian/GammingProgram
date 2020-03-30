@@ -1,7 +1,10 @@
 package module;
 
 import enums.AttributeType;
+import enums.EffectType;
 import lombok.Data;
+
+import java.math.BigDecimal;
 
 /**
  * @author admin
@@ -12,17 +15,17 @@ public class Attribute {
     /**
      * 属性类型
      */
-    private AttributeType attribute;
+    private AttributeType attributeType;
 
     /**
      * 是否正向收益
      */
-    private Boolean positive;
+    private EffectType effectType;
 
     /**
      * 数值
      */
-    private Long value;
+    private BigDecimal value;
 
 
 }

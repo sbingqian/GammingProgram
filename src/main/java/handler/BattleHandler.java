@@ -1,28 +1,30 @@
 package handler;
 
-import enums.AttributeType;
-import module.Attribute;
-import module.Equipment;
 import module.User;
+import util.CalculateUtil;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 public class BattleHandler {
 
+    private AttributeHandler attributeHandler = new AttributeHandler();
 
 
     public void battle(User userOne, User userTwo){
+
+        // 获取用户最终属性
+        attributeHandler.processUserAttr(userOne);
+        attributeHandler.processUserAttr(userTwo);
+
         //  获取攻击排序
-        processUserAttr(userOne);
-        processUserAttr(userOne);
-
         List<User> fightSeqList = fightSeq(userOne, userTwo);
-        Long speedDiff = fightSeqList.get(0).getSpeed() - fightSeqList.get(1).getSpeed();
-        while(userOne.getHealth() > 0 && userTwo.getHealth() > 0) {
+        BigDecimal speedDiff = fightSeqList.get(0).getSpeed().subtract(fightSeqList.get(1).getSpeed());
+        while(userOne.getHealth().compareTo(CalculateUtil.ZERO) > 0 && userTwo.getHealth().compareTo(CalculateUtil.ZERO) > 0) {
 
-            fight(fightSeqList.get(0), fightSeqList.get(1), 0L);
+            fight(fightSeqList.get(0), fightSeqList.get(1), null);
 
             fight(fightSeqList.get(1), fightSeqList.get(0), speedDiff);
         }
@@ -39,22 +41,21 @@ public class BattleHandler {
     }
 
 
-    private void fight(User userOne, User userTwo, Long speedDiff){
+    private void fight(User userOne, User userTwo, BigDecimal speedDiff){
 
         // 是否被闪避
 
 
-
         // 获取攻击力
-        Long attack = userOne.getAttack();
+        BigDecimal attack = userOne.getAttack();
 
         // 本次攻击是否暴击 是的情况 重新计算攻击力
-        if(isHitRange(userOne.getCritical())) {
+        if(isHitRange(userOne.getCritical().longValue())) {
             attack = attack;
         }
 
         // 获取对方防御力
-        Long defence = userTwo.getDefence();
+        Long defence = userTwo.getDefence().longValue();
 
         // 计算伤害值
         Long totalDamage = 1L;
@@ -68,22 +69,7 @@ public class BattleHandler {
     }
 
 
-    private void processUserAttr(User user){
-        Long baseAttr = user.getAttack();
-        Long baseAvoid = user.getAvoid();
-        Long baseSpeed = user.getSpeed();
-        Long baseDefence = user.getDefence();
-        Long baseCritical = user.getCritical();
-        List<Equipment> equipmentList = user.getEquipmentList();
-        for (Equipment equipment : equipmentList){
-            for (Attribute attribute : equipment.getAttributeList()) {
-                if (AttributeType.ATTACK.sameType(attribute.getAttribute())){
 
-
-                }
-            }
-        }
-    }
 
 
     /**

@@ -4,6 +4,7 @@ import enums.Profession;
 import lombok.Data;
 import lombok.ToString;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -31,32 +32,37 @@ public class User {
     /**
      * 攻击值
      */
-    private Long attack;
+    private BigDecimal attack;
 
     /**
      * 防御值
      */
-    private Long defence;
+    private BigDecimal defence;
 
     /**
      * 速度值
      */
-    private Long speed;
+    private BigDecimal speed;
 
     /**
      * 闪避值
      */
-    private Long avoid;
+    private BigDecimal avoid;
 
     /**
      * 暴击值
      */
-    private Long critical;
+    private BigDecimal critical;
 
     /**
      * 生命值
      */
-    private Long health;
+    private BigDecimal health;
+
+    /**
+     * 伤害加深
+     */
+    private BigDecimal damage;
 
     /**
      * 装备列表
