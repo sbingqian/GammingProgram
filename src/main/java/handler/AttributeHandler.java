@@ -10,6 +10,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author admin
+ */
 public class AttributeHandler {
 
     /**
@@ -83,10 +86,16 @@ public class AttributeHandler {
             user.setAvoid(newAvoidVal);
         }
 
-        // 处理暴击
-        if(AttributeType.CRITICAL.equals(attribute.getAttributeType())){
-            BigDecimal newCriticalVal = CalculateUtil.calEffect(user.getCritical(), attribute.getEffectType(), attribute.getValue());
-            user.setCritical(newCriticalVal);
+        // 处理暴击概率
+        if(AttributeType.CRITICAL_PERCENT.equals(attribute.getAttributeType())){
+            BigDecimal newCriticalVal = CalculateUtil.calEffect(user.getCriticalPercent(), attribute.getEffectType(), attribute.getValue());
+            user.setCriticalPercent(newCriticalVal);
+        }
+
+        // 处理暴击伤害
+        if(AttributeType.CRITICAL_DAMAGE.equals(attribute.getAttributeType())){
+            BigDecimal newCriticalVal = CalculateUtil.calEffect(user.getCriticalDamagePercent(), attribute.getEffectType(), attribute.getValue());
+            user.setCriticalDamagePercent(newCriticalVal);
         }
 
         // 处理生命
@@ -97,9 +106,10 @@ public class AttributeHandler {
 
         // 处理伤害加深
         if(AttributeType.DAMAGE.equals(attribute.getAttributeType())){
-            BigDecimal newDamageVal = CalculateUtil.calEffect(user.getDamage(), attribute.getEffectType(), attribute.getValue());
-            user.setDamage(newDamageVal);
+            BigDecimal newDamageVal = CalculateUtil.calEffect(user.getDamageIncrPercent(), attribute.getEffectType(), attribute.getValue());
+            user.setDamageIncrPercent(newDamageVal);
         }
+
     }
 
 

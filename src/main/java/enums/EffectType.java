@@ -10,10 +10,10 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum EffectType {
 
-    BUFF_PERCENT("百分比增益", "BUFF_PERCENT", 1),
-    DE_BUFF_PERCENT("百分比减益", "DE_BUFF_PERCENT", 2),
-    BUFF_VALUE("数值增益", "BUFF_VALUE", 3),
-    DE_BUFF_VALUE("数值减益", "DE_BUFF_VALUE", 4),
+    BUFF_VALUE("数值增益", "BUFF_VALUE", 1),
+    DE_BUFF_VALUE("数值减益", "DE_BUFF_VALUE", 2),
+    BUFF_PERCENT("百分比增益", "BUFF_PERCENT", 3),
+    DE_BUFF_PERCENT("百分比减益", "DE_BUFF_PERCENT", 4),
 
     ;
 

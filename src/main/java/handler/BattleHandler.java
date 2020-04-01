@@ -1,5 +1,6 @@
 package handler;
 
+import common.CommonConstant;
 import module.User;
 import util.CalculateUtil;
 
@@ -8,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * @author admin
+ */
 public class BattleHandler {
 
     private AttributeHandler attributeHandler = new AttributeHandler();
@@ -22,16 +26,27 @@ public class BattleHandler {
         //  获取攻击排序
         List<User> fightSeqList = fightSeq(userOne, userTwo);
         BigDecimal speedDiff = fightSeqList.get(0).getSpeed().subtract(fightSeqList.get(1).getSpeed());
-        while(userOne.getHealth().compareTo(CalculateUtil.ZERO) > 0 && userTwo.getHealth().compareTo(CalculateUtil.ZERO) > 0) {
+
+        while(userOne.getHealth().compareTo(CommonConstant.BD_ZERO) > 0 && userTwo.getHealth().compareTo(CommonConstant.BD_ZERO) > 0) {
 
             fight(fightSeqList.get(0), fightSeqList.get(1), null);
 
-            fight(fightSeqList.get(1), fightSeqList.get(0), speedDiff);
+            if(fightSeqList.get(1).getHealth().compareTo(CommonConstant.BD_ZERO) > 0) {
+                fight(fightSeqList.get(1), fightSeqList.get(0), speedDiff);
+            }
+
         }
+
+        System.out.println();
 
     }
 
-
+    /**
+     * 获取战斗顺序
+     * @param userOne
+     * @param userTwo
+     * @return
+     */
     private List<User> fightSeq(User userOne, User userTwo){
         List<User> seqList = new ArrayList<User>();
         seqList.add(userOne);
@@ -40,65 +55,57 @@ public class BattleHandler {
         return seqList;
     }
 
-
+    /**
+     * 战斗
+     *
+     * @param userOne
+     * @param userTwo
+     * @param speedDiff
+     */
     private void fight(User userOne, User userTwo, BigDecimal speedDiff){
 
         // 是否被闪避
-
+        if(speedDiff != null) {
+            CalculateUtil.calPercent(userTwo.getAvoid(), speedDiff);
+        }
+        if (CalculateUtil.calProbability(userTwo.getAvoid(), CommonConstant.INT_ZERO, CommonConstant.INT_HUNDRED)) {
+            System.out.println(userTwo.getName() + " 闪避了 " + userOne.getName() + "的攻击");
+            return;
+        }
 
         // 获取攻击力
         BigDecimal attack = userOne.getAttack();
-
+        boolean isCritical = false;
         // 本次攻击是否暴击 是的情况 重新计算攻击力
-        if(isHitRange(userOne.getCritical().longValue())) {
-            attack = attack;
+        if (CalculateUtil.calProbability(userOne.getCriticalPercent(), CommonConstant.INT_ZERO, CommonConstant.INT_HUNDRED)) {
+            attack = CalculateUtil.calPercent(attack, userOne.getCriticalDamagePercent());
+            isCritical = true;
         }
 
-        // 获取对方防御力
-        Long defence = userTwo.getDefence().longValue();
-
         // 计算伤害值
-        Long totalDamage = 1L;
+        BigDecimal totalDamage = CalculateUtil.calDamage(attack, userTwo.getDefence());
 
         // 计算伤害加成
-
+        totalDamage = CalculateUtil.calPercent(totalDamage, userOne.getDamageIncrPercent());
+        String desc = "";
+        if (isCritical) {
+            desc = " 会心一击了 ";
+        } else {
+            desc = " 攻击了 ";
+        }
+        System.out.println(userOne.getName() + desc + userTwo.getName() + "造成 " + totalDamage + " 点伤害");
 
         // 扣除生命值
+        BigDecimal userTwoHealth = userTwo.getHealth().subtract(totalDamage);
+        System.out.println(userTwo.getName() + " 剩余 " + userTwoHealth + " 点生命");
 
+        if (userTwoHealth.compareTo(CommonConstant.BD_ZERO) <= 0){
+            System.out.println(userTwo.getName() + " GG ");
+            userTwo.setHealth(CommonConstant.BD_ZERO);
+        } else {
+            userTwo.setHealth(userTwoHealth);
+        }
 
-    }
-
-
-
-
-
-    /**
-     * 处理收益
-     */
-    private void processBenefit(Long baseValue){
-
-    }
-
-
-    private boolean isHitRange(Long speedDiff){
-        long randomNum = randomnum(1, 1000);
-        return randomNum > speedDiff;
-    }
-
-
-
-
-    /**
-     * 获取2个值之间的随机数
-     *
-     * @param smin
-     * @param smax
-     * @return
-     */
-    private static long randomnum(int smin, int smax) {
-        int range = smax - smin;
-        double rand = Math.random();
-        return smin + Math.round(rand * range);
     }
 
 }

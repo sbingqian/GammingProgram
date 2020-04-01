@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,14 +46,9 @@ public class User {
     private BigDecimal speed;
 
     /**
-     * 闪避值
+     * 闪避概率
      */
     private BigDecimal avoid;
-
-    /**
-     * 暴击值
-     */
-    private BigDecimal critical;
 
     /**
      * 生命值
@@ -60,9 +56,20 @@ public class User {
     private BigDecimal health;
 
     /**
+     * 暴击概率
+     */
+    private BigDecimal criticalPercent;
+
+    /**
+     * 暴击伤害
+     */
+    private BigDecimal criticalDamagePercent;
+
+
+    /**
      * 伤害加深
      */
-    private BigDecimal damage;
+    private BigDecimal damageIncrPercent;
 
     /**
      * 装备列表
@@ -73,5 +80,14 @@ public class User {
      * 职业
      */
     private Profession profession;
+
+
+    public List<Equipment> getEquipmentList() {
+        if (equipmentList == null){
+            equipmentList = new ArrayList<>();
+        }
+        return equipmentList;
+    }
+
 
 }

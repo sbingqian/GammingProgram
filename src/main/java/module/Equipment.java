@@ -3,6 +3,7 @@ package module;
 import lombok.Data;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,7 +33,11 @@ public class Equipment {
      */
     private List<Attribute> attributeList;
 
-
-
+    public List<Attribute> getAttributeList() {
+        if (attributeList == null) {
+            attributeList = new ArrayList<>();
+        }
+        return attributeList;
+    }
 
 }
